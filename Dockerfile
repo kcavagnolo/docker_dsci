@@ -26,8 +26,7 @@ COPY dsci_services.sh /usr/local/bin
 RUN \
   set -ex && \
   echo 'DPkg::Post-Invoke {"/bin/rm -f /var/cache/apt/archives/*.deb || true";};' | tee /etc/apt/apt.conf.d/no-cache && \
-  do-release-upgrade && \
-  apt-get update -q -y && \
+  apt-get update -q -y --fix-missing && \
   apt-get install -y --no-install-recommends \
   	  bc build-essential ca-certificates cmake curl e2fslibs-dev emacs g++ \
 	  gcc gfortran git graphviz libatlas-base-dev libatlas3-base libffi-dev \
