@@ -31,7 +31,7 @@ RUN \
   	  bc build-essential ca-certificates cmake curl e2fslibs-dev emacs g++ \
 	  gcc gfortran git graphviz libatlas-base-dev libatlas3-base libffi-dev \
 	  libjasper-runtime libfreetype6 libfreetype6-dev libhdf5-dev \
-	  libjpeg62-dev libjpeg8 libjpeg-dev liblcms2-dev libopenblas-base make \
+	  liblcms2-dev libopenblas-base make \
 	  libopenblas-dev liblapack-dev libpng12-dev libssl-dev libtiff5-dev \
 	  libwebp-dev libzmq3-dev libboost-all-dev libgflags-dev \
 	  libgoogle-glog-dev libhdf5-serial-dev libleveldb-dev liblmdb-dev \
