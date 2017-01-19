@@ -37,20 +37,23 @@ setenv NV_HOST "ssh://ubuntu@`docker-machine ip awsgpu01`:"
 ssh-add ~/.docker/machine/machines/awsgpu01/id_rsa
 
 # build image
-docker build -t kcavagnolo/dsci-ml:latest -f Dockerfile.gpu .
+docker build -t kcavagnolo/docker_dsci:latest -f Dockerfile .
 
 # push to repo
 docker login
-docker push kcavagnolo/dsci-ml:latest
+docker push kcavagnolo/docker_dsci:latest
 
 # setup notebook
-docker run \
+nvidia-docker run \
  -it --rm \
+ -p 3838:3838 \
+ -p 6006:6006 \
+ -p 8787:8787 \
  -p 8888:8888 \
- -v /notebooks \
- -v /home/kcavagnolo/ml_fun:/notebooks \
- kcavagnolo/dsci-ml \
- sh -c "jupyter notebook --ip=0.0.0.0 --no-browser --notebook-dir='/notebooks'"
+ -p 54321:54321 \
+ -v /home/ubuntu:/notebooks \
+ -e PASSWORD='abc123' \
+ kcavagnolo/docker_dsci
 
 # clean-up
 docker stop $(docker ps -a -q)
@@ -79,10 +82,10 @@ https://github.com/NVIDIA/nvidia-docker/wiki/Deploy-on-Amazon-EC2
 https://github.com/NVIDIA/nvidia-docker/issues/171
 
 # works on the instance
-nvidia-docker run -it --rm -p 8888:8888 -v /home/ubuntu:/notebooks -e PASSWORD='abc123' kcavagnolo/udsd
+nvidia-docker run -it --rm -p 8888:8888 -v /home/ubuntu:/notebooks -e PASSWORD='abc123' kcavagnolo/docker_udsd
 
 # works from osx command line
-docker run --device=/dev/nvidiactl --device=/dev/nvidia-uvm --device=/dev/nvidia0 -it --rm -p 8888:8888 -v /home/ubuntu:/notebooks -e PASSWORD='abc123' kcavagnolo/udsd
+docker run --device=/dev/nvidiactl --device=/dev/nvidia-uvm --device=/dev/nvidia0 -it --rm -p 8888:8888 -v /home/ubuntu:/notebooks -e PASSWORD='abc123' kcavagnolo/docker_udsd
 
 # maybe all-in-one solution?
 sudo xhost +
