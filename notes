@@ -40,20 +40,23 @@ ssh-add ~/.docker/machine/machines/awsgpu01/id_rsa
 docker-machine scp -r . awsgpu01:
 
 # build image
-docker build -t kcavagnolo/dsci-ml:latest -f Dockerfile.gpu .
+docker build -t kcavagnolo/docker_dsci:latest -f Dockerfile .
 
 # push to repo
 docker login
-docker push kcavagnolo/dsci-ml:latest
+docker push kcavagnolo/docker_dsci:latest
 
 # setup notebook
-docker run \
+nvidia-docker run \
  -it --rm \
+ -p 3838:3838 \
+ -p 6006:6006 \
+ -p 8787:8787 \
  -p 8888:8888 \
- -v /notebooks \
- -v /home/kcavagnolo/ml_fun:/notebooks \
- kcavagnolo/dsci-ml \
- sh -c "jupyter notebook --ip=0.0.0.0 --no-browser --notebook-dir='/notebooks'"
+ -p 54321:54321 \
+ -v /home/ubuntu:/notebooks \
+ -e PASSWORD='abc123' \
+ kcavagnolo/docker_dsci
 
 # clean-up
 docker stop $(docker ps -a -q)
