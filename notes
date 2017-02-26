@@ -36,6 +36,9 @@ eval `docker-machine env awsgpu01`
 setenv NV_HOST "ssh://ubuntu@`docker-machine ip awsgpu01`:"
 ssh-add ~/.docker/machine/machines/awsgpu01/id_rsa
 
+# load local data
+docker-machine scp -r . awsgpu01:
+
 # build image
 docker build -t kcavagnolo/dsci-ml:latest -f Dockerfile.gpu .
 
@@ -79,10 +82,10 @@ https://github.com/NVIDIA/nvidia-docker/wiki/Deploy-on-Amazon-EC2
 https://github.com/NVIDIA/nvidia-docker/issues/171
 
 # works on the instance
-nvidia-docker run -it --rm -p 8888:8888 -v /home/ubuntu:/notebooks -e PASSWORD='abc123' kcavagnolo/udsd
+nvidia-docker run -it --rm -p 8888:8888 -v /home/ubuntu:/notebooks -w /notebooks -e PASSWORD='abc123' kcavagnolo/udsd
 
 # works from osx command line
-docker run --device=/dev/nvidiactl --device=/dev/nvidia-uvm --device=/dev/nvidia0 -it --rm -p 8888:8888 -v /home/ubuntu:/notebooks -e PASSWORD='abc123' kcavagnolo/udsd
+docker run --device=/dev/nvidiactl --device=/dev/nvidia-uvm --device=/dev/nvidia0 -it --rm -p 8888:8888 -v /home/ubuntu:/notebooks -w /notebooks -e PASSWORD='abc123' kcavagnolo/udsd
 
 # maybe all-in-one solution?
 sudo xhost +

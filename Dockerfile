@@ -5,11 +5,11 @@ FROM nvidia/cuda:8.0-cudnn5-devel
 MAINTAINER Ken Cavagnolo <ken@kcavagnolo.com>
 
 # set env
-ARG RSTUDIO_VERSION=1.0.44
+ARG RSTUDIO_VERSION=1.0.136
 ARG THEANO_VERSION=rel-0.8.2
-ARG TENSORFLOW_VERSION=0.12.0
-ARG KERAS_VERSION=1.1.1
-ARG LASAGNE_VERSION=v0.1
+ARG TENSORFLOW_VERSION=1.0.0
+ARG KERAS_VERSION=1.2.2
+ARG LASAGNE_VERSION=''
 ARG TORCH_VERSION=latest
 ARG CAFFE_VERSION=master
 ENV CAFFE_ROOT=/root/caffe
@@ -193,9 +193,8 @@ CMD ["/usr/local/bin/dsci_services.sh"]
 # # # install torch
 # # RUN \
 # #   git clone https://github.com/torch/distro.git /root/torch --recursive && \
-# #   cd /root/torch && \
-# #   bash install-deps && \
-# #   yes yes | ./install.sh
+# #   bash /root/torch/install-deps && \
+# #   yes yes | /root/torch/install.sh
 # #
 # # # setup lua env
 # # ENV LUA_PATH='/root/.luarocks/share/lua/5.1/?.lua;/root/.luarocks/share/lua/5.1/?/init.lua;/root/torch/install/share/lua/5.1/?.lua;/root/torch/install/share/lua/5.1/?/init.lua;./?.lua;/root/torch/install/share/luajit-2.1.0-beta1/?.lua;/usr/local/share/lua/5.1/?.lua;/usr/local/share/lua/5.1/?/init.lua'
@@ -211,12 +210,10 @@ CMD ["/usr/local/bin/dsci_services.sh"]
 # #   luarocks install cutorch && \
 # #   luarocks install cunn && \
 # #   cd /root && \
-# #   git clone https://github.com/soumith/cudnn.torch.git && cd cudnn.torch && \
-# #   git checkout R4 && \
-# #   luarocks make && \
-# #   cd /root && git clone https://github.com/facebook/iTorch.git && \
-# #   cd iTorch && \
-# #   luarocks make
+# #   git clone https://github.com/soumith/cudnn.torch.git /root/cudnn_torch --branch R4 --recursive && 
+# #   cd /root/cudnn_torch && luarocks make && \
+# #   git clone https://github.com/facebook/iTorch.git /root/itorch --recursive && \
+# #   cd /root/itorch && luarocks make
 # #
 # # install DIGITS and launch server
 # # ARG CUDA_REPO_PKG=cuda-repo-ubuntu1404_7.5-18_amd64.deb
